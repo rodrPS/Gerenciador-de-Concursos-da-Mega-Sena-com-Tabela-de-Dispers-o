@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "hash_table.h"
-#include "concurso.h"
+#include "headers/hash_table.h"
+#include "headers/concurso.h"
 
 void inicializar_tabela(HashTable* ht) {
     for (int i = 0; i < TAMANHO_TABELA; i++) {

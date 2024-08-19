@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "concurso.h"
+#include "headers/concurso.h"
 
 Concurso* criar_concurso(int numero_concurso, const char* data, int numeros[MAX_NUMEROS]) {
     Concurso* novo_concurso = (Concurso*)malloc(sizeof(Concurso));

@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "stats.h"
-#include "concurso.h"
-#include "hash_table.h"
+#include "headers/stats.h"
+#include "headers/concurso.h"
+#include "headers/hash_table.h"
 
 void calcular_frequencia(HashTable* ht, int frequencia[61]) {
     for (int i = 1; i <= 60; i++) {
