@@ -1,23 +1,21 @@
 #ifndef HASH_TABLE_H
 #define HASH_TABLE_H
 
-#define TABLE_SIZE 100  // Define the size of the hash table
+#define TABLE_SIZE 1000
 
-// Node structure for linked list in hash table
 typedef struct Node {
     int concurso;
-    char date[11];  // Format: DD-MM-YYYY
+    char date[11];
     int numbers[6];
     struct Node* next;
 } Node;
 
-// Hash table structure
 typedef struct HashTable {
     Node* table[TABLE_SIZE];
 } HashTable;
 
-// Function prototypes
 Node* create_node(int concurso, const char* date, int numbers[6]);
+unsigned int hash_function(int concurso);
 HashTable* create_hash_table();
 void insert_concurso(HashTable* hash_table, int concurso, const char* date, int numbers[6]);
 Node* search_concurso(HashTable* hash_table, int concurso);
