@@ -1,23 +1,32 @@
 #include <stdio.h>
-#include "hash_table.h"
-#include "file_manager.h"
-#include "stats.h"
+#include "src/headers/hash_table.h"
+#include "src/headers/file_reader.h"
+#include "src/headers/stats.h"
 
 void menu(HashTable* ht) {
     int opcao;
+
     do {
         printf("\nMenu:\n");
-        printf("1. Inserir Concurso\n");
-        printf("2. Buscar Concurso\n");
-        printf("3. Remover Concurso\n");
-        printf("4. Mostrar Concursos\n");
-        printf("5. Calcular Estatísticas\n");
-        printf("6. Sair\n");
+        printf("1. Carregar Dados de Concursos\n");
+        printf("2. Inserir Concurso\n");
+        printf("3. Buscar Concurso\n");
+        printf("4. Remover Concurso\n");
+        printf("5. Mostrar Concursos\n");
+        printf("6. Calcular Estatísticas\n");
+        printf("0. Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
 
         switch (opcao) {
             case 1: {
+                char nome_arquivo[256];
+                printf("Digite o nome do arquivo: ");
+                scanf("%s", nome_arquivo);
+                ler_arquivo(ht, nome_arquivo);
+                break;
+            }
+            case 2: {
                 int numero_concurso, numeros[MAX_NUMEROS];
                 char data[11];
                 printf("Número do concurso: ");
@@ -32,7 +41,7 @@ void menu(HashTable* ht) {
                 inserir_concurso(ht, concurso);
                 break;
             }
-            case 2: {
+            case 3: {
                 int numero_concurso;
                 printf("Digite o número do concurso: ");
                 scanf("%d", &numero_concurso);
@@ -44,17 +53,17 @@ void menu(HashTable* ht) {
                 }
                 break;
             }
-            case 3: {
+            case 4: {
                 int numero_concurso;
                 printf("Digite o número do concurso: ");
                 scanf("%d", &numero_concurso);
                 remover_concurso(ht, numero_concurso);
                 break;
             }
-            case 4:
+            case 5:
                 mostrar_concursos(ht);
                 break;
-            case 5: {
+            case 6: {
                 int frequencia[61];
                 calcular_frequencia(ht, frequencia);
                 listar_mais_menos_sorteados(frequencia);
@@ -65,13 +74,13 @@ void menu(HashTable* ht) {
                 printf("Número de concursos no ano %d: %d\n", ano, count);
                 break;
             }
-            case 6:
+            case 0:
                 printf("Saindo...\n");
                 break;
             default:
                 printf("Opcao invalida!\n");
         }
-    } while (opcao != 6);
+    } while (opcao != 0);
 }
 
 int main() {
@@ -79,7 +88,7 @@ int main() {
     inicializar_tabela(&ht);
 
     // Carregando os dados do arquivo sorteios.csv ao iniciar o programa
-    ler_arquivo(&ht, "sorteios.csv");
+    // ler_arquivo(&ht, "sorteios_teste.csv");
 
     menu(&ht);
 
