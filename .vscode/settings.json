@@ -1,0 +1,11 @@
+{
+	"files.associations": {
+		"*.ejs": "html",
+		"*.json": "json",
+		"file_manager.h": "c",
+		"file_reader.h": "c",
+		"concurso.h": "c",
+		"stats.h": "c",
+		"hash_table.h": "c"
+	}
+}

@@ -1,7 +1,0 @@
-*.o
-
-src/*.o
-
-mega_sena
-
-.vscode
