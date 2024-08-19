@@ -1,6 +1,5 @@
-#include "concurso.h"
-#include "hash_table.h"
-#include "utils.h"
+#include "headers/concurso.h"
+#include "headers/hash_table.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,7 +10,7 @@ static char determine_delimiter(const char *filename) {
     return '\0';
 }
 
-void load_concursos_from_file(HashTable *hash_table, const char *filename) {
+void carregar_concursos(HashTable *hash_table, const char *filename) {
     FILE *file = fopen(filename, "r");
     if (!file) {
         perror("Erro ao abrir o arquivo");
@@ -43,7 +42,7 @@ void load_concursos_from_file(HashTable *hash_table, const char *filename) {
         }
 
         if (concurso != 0 && strlen(date) > 0) {
-            insert_concurso(hash_table, concurso, date, numbers);
+            inserir_concursos(hash_table, concurso, date, numbers);
         }
     }
 
@@ -51,10 +50,10 @@ void load_concursos_from_file(HashTable *hash_table, const char *filename) {
     fclose(file);
 }
 
-int count_number_frequency(HashTable *hash_table, int number) {
+int contar_frequencia(HashTable *hash_table, int number) {
     int count = 0;
     for (int i = 0; i < TABLE_SIZE; i++) {
-        Node *current = hash_table->table[i];
+        Concurso *current = hash_table->table[i];
         while (current) {
             for (int j = 0; j < 6; j++) {
                 if (current->numbers[j] == number) count++;
@@ -65,11 +64,11 @@ int count_number_frequency(HashTable *hash_table, int number) {
     return count;
 }
 
-void display_top_n_numbers(HashTable *hash_table, int n, int most_frequent) {
+void mostrar_top_numeros(HashTable *hash_table, int n, int most_frequent) {
     int frequency[60] = {0};
 
     for (int i = 1; i <= 60; i++) {
-        frequency[i - 1] = count_number_frequency(hash_table, i);
+        frequency[i - 1] = contar_frequencia(hash_table, i);
     }
 
     for (int i = 0; i < n; i++) {
@@ -86,10 +85,10 @@ void display_top_n_numbers(HashTable *hash_table, int n, int most_frequent) {
     }
 }
 
-int count_concursos_in_year(HashTable *hash_table, int year) {
+int contar_concursos_ano(HashTable *hash_table, int year) {
     int count = 0;
     for (int i = 0; i < TABLE_SIZE; i++) {
-        Node *current = hash_table->table[i];
+        Concurso *current = hash_table->table[i];
         while (current) {
             int concurso_year;
             sscanf(current->date + 6, "%d", &concurso_year);

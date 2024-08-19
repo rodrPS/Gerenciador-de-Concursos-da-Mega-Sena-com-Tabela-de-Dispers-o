@@ -1,13 +1,13 @@
-#include "hash_table.h"
+#include "headers/hash_table.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-Node* create_node(int concurso, const char* date, int numbers[6]) {
-    Node* new_node = (Node*)malloc(sizeof(Node));
+Concurso* create_node(int concurso, const char* date, int numbers[6]) {
+    Concurso* new_node = (Concurso*)malloc(sizeof(Concurso));
     if (!new_node) return NULL;
 
-    new_node->concurso = concurso;
+    new_node->id = concurso;
     strncpy(new_node->date, date, 11);
     memcpy(new_node->numbers, numbers, 6 * sizeof(int));
     new_node->next = NULL;
@@ -19,7 +19,7 @@ unsigned int hash_function(int concurso) {
     return concurso % TABLE_SIZE;
 }
 
-HashTable* create_hash_table() {
+HashTable* criar_tabela() {
     HashTable* hash_table = (HashTable*)malloc(sizeof(HashTable));
     if (!hash_table) return NULL;
 
@@ -30,12 +30,12 @@ HashTable* create_hash_table() {
     return hash_table;
 }
 
-void insert_concurso(HashTable* hash_table, int concurso, const char* date, int numbers[6]) {
+void inserir_concursos(HashTable* hash_table, int concurso, const char* date, int numbers[6]) {
     unsigned int index = hash_function(concurso);
 
-    Node* current = hash_table->table[index];
+    Concurso* current = hash_table->table[index];
     while (current) {
-        if (current->concurso == concurso) {
+        if (current->id == concurso) {
             printf("Concurso %d já existe e não pode ser duplicado.\n", concurso);
             return;
         }
@@ -55,7 +55,7 @@ void insert_concurso(HashTable* hash_table, int concurso, const char* date, int 
         number_check[numbers[i]] = 1;
     }
 
-    Node* new_node = create_node(concurso, date, numbers);
+    Concurso* new_node = create_node(concurso, date, numbers);
     if (!new_node) {
         printf("Falha na alocação de memória para o novo concurso.\n");
         return;
@@ -70,28 +70,26 @@ void insert_concurso(HashTable* hash_table, int concurso, const char* date, int 
         }
         current->next = new_node;
     }
-
-    printf("Concurso %d inserido com sucesso.\n", concurso);
 }
 
-Node* search_concurso(HashTable* hash_table, int concurso) {
+Concurso* buscar_concursos(HashTable* hash_table, int concurso) {
     unsigned int index = hash_function(concurso);
-    Node* current = hash_table->table[index];
+    Concurso* current = hash_table->table[index];
 
     while (current) {
-        if (current->concurso == concurso) return current;
+        if (current->id == concurso) return current;
         current = current->next;
     }
 
     return NULL;
 }
 
-void remove_concurso(HashTable* hash_table, int concurso) {
+void remover_concurso(HashTable* hash_table, int concurso) {
     unsigned int index = hash_function(concurso);
-    Node* current = hash_table->table[index];
-    Node* previous = NULL;
+    Concurso* current = hash_table->table[index];
+    Concurso* previous = NULL;
 
-    while (current && current->concurso != concurso) {
+    while (current && current->id != concurso) {
         previous = current;
         current = current->next;
     }
@@ -113,9 +111,9 @@ void remove_concurso(HashTable* hash_table, int concurso) {
 
 void display_concursos(HashTable* hash_table) {
     for (int i = 0; i < TABLE_SIZE; i++) {
-        Node* current = hash_table->table[i];
+        Concurso* current = hash_table->table[i];
         while (current) {
-            printf("Concurso: %d, Data: %s, Números: ", current->concurso, current->date);
+            printf("Concurso: %d, Data: %s, Números: ", current->id, current->date);
             for (int j = 0; j < 6; j++) {
                 printf("%d ", current->numbers[j]);
             }
@@ -125,11 +123,11 @@ void display_concursos(HashTable* hash_table) {
     }
 }
 
-void free_hash_table(HashTable* hash_table) {
+void free_table(HashTable* hash_table) {
     for (int i = 0; i < TABLE_SIZE; i++) {
-        Node* current = hash_table->table[i];
+        Concurso* current = hash_table->table[i];
         while (current) {
-            Node* temp = current;
+            Concurso* temp = current;
             current = current->next;
             free(temp);
         }

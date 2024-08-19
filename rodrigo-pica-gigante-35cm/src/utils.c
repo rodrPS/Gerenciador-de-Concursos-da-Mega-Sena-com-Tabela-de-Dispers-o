@@ -1,9 +1,9 @@
-#include "utils.h"
+#include "headers/helpers.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-char* trim_whitespace(char* str) {
+char* remover_espacos(char* str) {
     char* end;
 
     while (*str == ' ') str++;
